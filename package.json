@@ -1,0 +1,11 @@
+{
+  "name": "fiestas-fantasy",
+  "version": "1.0.0",
+  "description": "Casino de Fantasía para Eventos - Fiestas Fantasy El Bajío",
+  "scripts": {
+    "start": "serve -s . -l ${PORT:-3000}"
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
+  }
+}
