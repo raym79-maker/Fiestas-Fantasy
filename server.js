@@ -28,6 +28,11 @@ app.get('/blog/quinceanera-diferente-queretaro', (req, res) => {
   res.sendFile(path.join(__dirname, 'blog', 'blog-quinceañera-diferente.html'));
 });
 
+app.get('/sitemap.xml', (req, res) => {
+  res.setHeader('Content-Type', 'application/xml');
+  res.sendFile(path.join(__dirname, 'sitemap.xml'));
+});
+
 // Para cualquier otra ruta no encontrada, servir el index principal
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
