@@ -24,7 +24,7 @@ app.get('/blog/que-es-casino-entretenimiento', (req, res) => {
   res.sendFile(path.join(__dirname, 'blog', 'blog-que-es-casino-entretenimiento.html'));
 });
 
-app.get('/blog/quinceañera-diferente-querétaro', (req, res) => {
+app.get('/blog/quinceanera-diferente-queretaro', (req, res) => {
   res.sendFile(path.join(__dirname, 'blog', 'blog-quinceañera-diferente.html'));
 });
 
