@@ -17,15 +17,15 @@ app.get('/fiestas-familiares', (req, res) => {
 });
 
 app.get('/blog/ideas-convivio-empresa-bajio', (req, res) => {
-  res.sendFile(path.join(__dirname, 'blog', 'ideas-convivio-empresa-bajio', 'index.html'));
+  res.sendFile(path.join(__dirname, 'blog', 'blog-convivio-empresa-bajio.html'));
 });
 
 app.get('/blog/que-es-casino-entretenimiento', (req, res) => {
-  res.sendFile(path.join(__dirname, 'blog', 'que-es-casino-entretenimiento', 'index.html'));
+  res.sendFile(path.join(__dirname, 'blog', 'blog-que-es-casino-entretenimiento.html'));
 });
 
 app.get('/blog/quinceañera-diferente-querétaro', (req, res) => {
-  res.sendFile(path.join(__dirname, 'blog', 'quinceañera-diferente-querétaro', 'index.html'));
+  res.sendFile(path.join(__dirname, 'blog', 'blog-quinceañera-diferente.html'));
 });
 
 // Para cualquier otra ruta no encontrada, servir el index principal
