@@ -4,28 +4,82 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-// Servir archivos estáticos
-app.use(express.static(path.join(__dirname, '.')));
+// URL canónica de cada página (la que aparece en el sitemap y en el <link rel="canonical">)
+const CANONICAL = {
+  '/eventos-corporativos': path.join(__dirname, 'eventos-corporativos', 'index.html'),
+  '/fiestas-familiares': path.join(__dirname, 'fiestas-familiares', 'index.html'),
+  '/blog/ideas-convivio-empresa-bajio': path.join(__dirname, 'blog', 'blog-convivio-empresa-bajio.html'),
+  '/blog/que-es-casino-entretenimiento': path.join(__dirname, 'blog', 'blog-que-es-casino-entretenimiento.html'),
+  '/blog/quinceanera-diferente-queretaro': path.join(__dirname, 'blog', 'blog-quinceañera-diferente.html'),
+};
 
-// Rutas específicas que sirven archivos HTML sin extensión
-app.get('/eventos-corporativos', (req, res) => {
-  res.sendFile(path.join(__dirname, 'eventos-corporativos', 'index.html'));
+// Rutas de archivo internas que no deben indexarse por separado:
+// si alguien (o Google) las alcanza, se redirigen a su URL canónica.
+const FILE_ALIASES = {
+  '/eventos-corporativos/index': '/eventos-corporativos',
+  '/fiestas-familiares/index': '/fiestas-familiares',
+  '/blog/blog-convivio-empresa-bajio': '/blog/ideas-convivio-empresa-bajio',
+  '/blog/blog-que-es-casino-entretenimiento': '/blog/que-es-casino-entretenimiento',
+  '/blog/blog-quinceañera-diferente': '/blog/quinceanera-diferente-queretaro',
+};
+
+// Archivos estáticos reales que deben servirse tal cual (no normalizar)
+const STATIC_EXT = /\.(jpe?g|png|gif|svg|ico|webp|css|js|xml|txt|json|woff2?|ttf|eot|mp4|webm|pdf)$/i;
+
+// ──────────────────────────────────────────────────────────────
+// SEO: normalización de URLs con 301.
+// Debe ir ANTES de express.static para evitar contenido duplicado.
+// Consolida: /pagina.html, /pagina/ y /pagina  →  /pagina
+// ──────────────────────────────────────────────────────────────
+app.use((req, res, next) => {
+  const qIndex = req.url.indexOf('?');
+  const pathname = qIndex === -1 ? req.url : req.url.slice(0, qIndex);
+  const query = qIndex === -1 ? '' : req.url.slice(qIndex);
+
+  if (STATIC_EXT.test(pathname)) return next();
+
+  let clean = pathname;
+
+  // 1. Quitar la extensión .html:  /eventos-corporativos.html → /eventos-corporativos
+  if (clean.toLowerCase().endsWith('.html')) {
+    clean = clean.slice(0, -5);
+  }
+
+  // 2. Quitar el slash final (menos en la raíz):  /blog/post/ → /blog/post
+  if (clean.length > 1) {
+    clean = clean.replace(/\/+$/, '') || '/';
+  }
+
+  // 3. /index → raíz
+  if (clean === '/index') {
+    clean = '/';
+  }
+
+  // 4. Rutas de archivo internas → su URL canónica
+  if (FILE_ALIASES[clean]) {
+    clean = FILE_ALIASES[clean];
+  }
+
+  if (clean !== pathname) {
+    return res.redirect(301, clean + query);
+  }
+
+  next();
 });
 
-app.get('/fiestas-familiares', (req, res) => {
-  res.sendFile(path.join(__dirname, 'fiestas-familiares', 'index.html'));
+// Archivos estáticos.
+// index:false y redirect:false evitan que express.static genere
+// variantes de URL (/carpeta/ → index.html) que dupliquen contenido.
+app.use(express.static(path.join(__dirname, '.'), { index: false, redirect: false }));
+
+// Home
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/blog/ideas-convivio-empresa-bajio', (req, res) => {
-  res.sendFile(path.join(__dirname, 'blog', 'blog-convivio-empresa-bajio.html'));
-});
-
-app.get('/blog/que-es-casino-entretenimiento', (req, res) => {
-  res.sendFile(path.join(__dirname, 'blog', 'blog-que-es-casino-entretenimiento.html'));
-});
-
-app.get('/blog/quinceanera-diferente-queretaro', (req, res) => {
-  res.sendFile(path.join(__dirname, 'blog', 'blog-quinceañera-diferente.html'));
+// Páginas con URL limpia
+Object.entries(CANONICAL).forEach(([route, file]) => {
+  app.get(route, (req, res) => res.sendFile(file));
 });
 
 app.get('/sitemap.xml', (req, res) => {
@@ -33,9 +87,11 @@ app.get('/sitemap.xml', (req, res) => {
   res.sendFile(path.join(__dirname, 'sitemap.xml'));
 });
 
-// Para cualquier otra ruta no encontrada, servir el index principal
+// Cualquier otra ruta: 301 a la home.
+// Antes se servía index.html con status 200, lo que hacía que Google
+// indexara la home bajo infinitas URLs distintas (contenido duplicado).
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.redirect(301, '/');
 });
 
 app.listen(PORT, () => {
