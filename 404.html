@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, follow" />
+  <title>Página no encontrada | Fiesta Fantasy</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --gold:       #D4AF37;
+      --gold-light: #FFD700;
+      --gold-dark:  #8B7536;
+      --red:        #C0392B;
+      --red-light:  #E74C3C;
+      --black:      #080808;
+      --dark:       #111111;
+      --dark2:      #1A1A1A;
+      --text:       #F5F0E8;
+      --text-muted: #A89060;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--black);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Resplandor dorado de fondo */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 120vmax;
+      height: 120vmax;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(212,175,55,0.07) 0%, rgba(212,175,55,0) 55%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap { position: relative; z-index: 1; max-width: 620px; }
+
+    .logo { width: 130px; height: auto; margin-bottom: 2.5rem; opacity: 0.95; }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      width: 62px;
+      height: 88px;
+      border-radius: 8px;
+      background: linear-gradient(160deg, #FDFBF5, #E8E2D5);
+      border: 1px solid rgba(212,175,55,0.5);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: var(--black);
+    }
+
+    .card:nth-child(1) { transform: rotate(-9deg) translateY(6px); }
+    .card:nth-child(2) { transform: rotate(0deg); }
+    .card:nth-child(3) { transform: rotate(9deg) translateY(6px); }
+    .card.red { color: var(--red); }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 5.5vw, 3rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .sub {
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: rgba(245,240,232,0.75);
+      margin-bottom: 2.5rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 1rem 2.1rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+      color: var(--black);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(212,175,55,0.35);
+    }
+
+    .btn-ghost {
+      border: 1px solid rgba(212,175,55,0.45);
+      color: var(--gold);
+    }
+
+    .btn-ghost:hover {
+      transform: translateY(-2px);
+      border-color: var(--gold);
+      background: rgba(212,175,55,0.08);
+    }
+
+    .links-title {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding-top: 1.8rem;
+      margin-bottom: 1.1rem;
+      border-top: 1px solid rgba(212,175,55,0.15);
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem 1.6rem;
+      justify-content: center;
+    }
+
+    .links a {
+      color: rgba(245,240,232,0.7);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: color 0.2s ease;
+    }
+
+    .links a:hover { color: var(--gold); }
+
+    .wa {
+      position: fixed;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #25D366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+      z-index: 10;
+      transition: transform 0.25s ease;
+    }
+
+    .wa:hover { transform: scale(1.08); }
+    .wa svg { width: 30px; height: 30px; fill: #fff; }
+
+    @media (max-width: 640px) {
+      /* Espacio inferior para que el botón de WhatsApp no tape los enlaces */
+      body { padding-bottom: 6.5rem; }
+      .card { width: 54px; height: 76px; font-size: 1.8rem; }
+      .logo { width: 105px; margin-bottom: 2rem; }
+      .btn { padding: 0.9rem 1.6rem; }
+      .links { gap: 0.6rem 1.2rem; }
+      .wa { right: 1rem; bottom: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <img src="/logo.png" alt="Fiesta Fantasy" class="logo" />
+
+    <div class="cards" aria-hidden="true">
+      <div class="card red">4</div>
+      <div class="card">0</div>
+      <div class="card red">4</div>
+    </div>
+
+    <h1>Esta mano <em>no está en la mesa</em></h1>
+
+    <p class="sub">
+      La página que buscas no existe o cambió de lugar.
+      Pero tu evento sí puede existir — y podemos cotizarlo hoy mismo.
+    </p>
+
+    <div class="actions">
+      <a href="/#contacto" class="btn btn-primary">Cotizar mi evento</a>
+      <a href="/" class="btn btn-ghost">Ir al inicio</a>
+    </div>
+
+    <p class="links-title">O ve directo a</p>
+    <nav class="links">
+      <a href="/eventos-corporativos">Eventos corporativos</a>
+      <a href="/fiestas-familiares">Fiestas familiares</a>
+      <a href="/#paquetes">Paquetes</a>
+      <a href="/#galeria">Galería</a>
+      <a href="/#faq">Preguntas frecuentes</a>
+    </nav>
+  </div>
+
+  <a href="https://wa.me/524426013471" target="_blank" rel="noopener" class="wa" aria-label="Escríbenos por WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.464 3.488"/></svg>
+  </a>
+
+</body>
+</html>
