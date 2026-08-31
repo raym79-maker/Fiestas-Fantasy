@@ -87,11 +87,12 @@ app.get('/sitemap.xml', (req, res) => {
   res.sendFile(path.join(__dirname, 'sitemap.xml'));
 });
 
-// Cualquier otra ruta: 301 a la home.
-// Antes se servía index.html con status 200, lo que hacía que Google
-// indexara la home bajo infinitas URLs distintas (contenido duplicado).
-app.get('*', (req, res) => {
-  res.redirect(301, '/');
+// Cualquier otra ruta: 404 real.
+// Devolver 404 (y no la home con 200, ni un 301 a la home) es lo que
+// Google espera para URLs que no existen: evita los "soft 404" y que
+// se indexe contenido duplicado bajo direcciones inventadas.
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, '404.html'));
 });
 
 app.listen(PORT, () => {
