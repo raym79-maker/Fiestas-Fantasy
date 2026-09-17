@@ -21,6 +21,10 @@ const FILE_ALIASES = {
   '/blog/blog-convivio-empresa-bajio': '/blog/ideas-convivio-empresa-bajio',
   '/blog/blog-que-es-casino-entretenimiento': '/blog/que-es-casino-entretenimiento',
   '/blog/blog-quinceañera-diferente': '/blog/quinceanera-diferente-queretaro',
+  // Variantes que Google tiene indexadas y nunca existieron como ruta real
+  '/blog/quinceanera-divertida-queretaro': '/blog/quinceanera-diferente-queretaro',
+  '/blog/quinceañera-divertida-queretaro': '/blog/quinceanera-diferente-queretaro',
+  '/blog/quinceañera-diferente-queretaro': '/blog/quinceanera-diferente-queretaro',
 };
 
 // Archivos estáticos reales que deben servirse tal cual (no normalizar)
@@ -55,9 +59,16 @@ app.use((req, res, next) => {
     clean = '/';
   }
 
-  // 4. Rutas de archivo internas → su URL canónica
+  // 4. Rutas de archivo internas y variantes indexadas → su URL canónica.
+  //    Se prueba tal cual y decodificada, porque Express no decodifica req.url:
+  //    una "ñ" puede llegar como %C3%B1 y no coincidiría con la clave literal.
+  var decoded = clean;
+  try { decoded = decodeURIComponent(clean); } catch (e) { /* URL malformada: se ignora */ }
+
   if (FILE_ALIASES[clean]) {
     clean = FILE_ALIASES[clean];
+  } else if (FILE_ALIASES[decoded]) {
+    clean = FILE_ALIASES[decoded];
   }
 
   if (clean !== pathname) {
